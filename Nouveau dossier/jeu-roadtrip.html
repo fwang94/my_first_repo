@@ -1,0 +1,830 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mini-jeu du road trip - Les Zhu au Zoo</title>
+  <meta name="description" content="Mini-jeu textuel pour choisir une activité par jour du road trip : Beauval, Puy du Fou, Saint-Nazaire, Dinan et Mont-Saint-Michel, puis Paris.">
+  <style>
+    :root {
+      --ink: #1d211b;
+      --muted: #60685d;
+      --paper: #f6f2e8;
+      --white: #fffaf1;
+      --green: #315f3e;
+      --green-dark: #1f3f2d;
+      --red: #9c2725;
+      --gold: #cf9632;
+      --blue: #d5e6e8;
+      --line: rgba(29, 33, 27, .16);
+      --shadow: 0 18px 42px rgba(35, 42, 31, .14);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(207, 150, 50, .22), transparent 360px),
+        linear-gradient(135deg, #eef4ec 0%, var(--paper) 52%, #edf5f7 100%);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    a {
+      color: var(--green-dark);
+      font-weight: 800;
+      text-underline-offset: .18em;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible {
+      outline: 3px solid var(--red);
+      outline-offset: 4px;
+    }
+
+    .shell {
+      width: min(1120px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 22px 0 44px;
+    }
+
+    .top-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .home-link,
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 0;
+      background: var(--green-dark);
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 850;
+      box-shadow: var(--shadow);
+    }
+
+    .home-link[aria-current="page"] {
+      background: var(--gold);
+      color: var(--ink);
+    }
+
+    .button.secondary {
+      background: var(--white);
+      color: var(--green-dark);
+      border: 1px solid var(--line);
+      box-shadow: none;
+    }
+
+    .button.red {
+      background: var(--red);
+    }
+
+    .hero,
+    .game,
+    .side-panel,
+    .choice,
+    .summary-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 250, 241, .92);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero {
+      padding: clamp(22px, 5vw, 42px);
+      margin-bottom: 18px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .kicker {
+      margin: 0 0 10px;
+      color: var(--green-dark);
+      font-size: .84rem;
+      font-weight: 850;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 13ch;
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.8rem, 8vw, 6rem);
+      line-height: .9;
+      letter-spacing: 0;
+    }
+
+    h2,
+    h3 {
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .hero p,
+    .day-intro,
+    .choice p,
+    .side-panel p,
+    .summary-card p {
+      color: var(--muted);
+    }
+
+    .hero p {
+      max-width: 72ch;
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 310px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .game {
+      min-height: 560px;
+      overflow: hidden;
+    }
+
+    .game-head {
+      padding: 18px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(238, 244, 236, .8);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .step {
+      min-height: 8px;
+      border-radius: 999px;
+      background: rgba(49, 95, 62, .16);
+    }
+
+    .step.active,
+    .step.done {
+      background: var(--green);
+    }
+
+    .round {
+      padding: 18px;
+    }
+
+    .day-title {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 10px;
+    }
+
+    .day-title span {
+      flex: 0 0 auto;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--blue);
+      color: var(--green-dark);
+      font-size: .82rem;
+      font-weight: 850;
+    }
+
+    .day-intro {
+      margin: 0 0 16px;
+    }
+
+    .choices {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    .choice {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 12px;
+      padding: 14px;
+      cursor: pointer;
+      transition: border-color .15s ease, transform .15s ease, background .15s ease;
+    }
+
+    .choice:hover {
+      transform: translateY(-1px);
+      border-color: rgba(49, 95, 62, .42);
+    }
+
+    .choice.selected {
+      border-color: var(--green);
+      background: rgba(238, 244, 236, .96);
+    }
+
+    .choice input {
+      width: 20px;
+      height: 20px;
+      margin: 2px auto 0;
+      accent-color: var(--green);
+    }
+
+    .choice strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 1.02rem;
+    }
+
+    .choice p {
+      margin: 0;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    .tag {
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(49, 95, 62, .1);
+      color: var(--green-dark);
+      font-size: .82rem;
+      font-weight: 800;
+    }
+
+    .feedback {
+      min-height: 54px;
+      margin: 14px 0 0;
+      padding: 12px 14px;
+      border-left: 4px solid var(--gold);
+      background: rgba(207, 150, 50, .12);
+      color: var(--ink);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px;
+      border-top: 1px solid var(--line);
+      background: rgba(255, 250, 241, .72);
+    }
+
+    .action-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .status {
+      color: var(--muted);
+      font-size: .94rem;
+      font-weight: 750;
+    }
+
+    .side {
+      position: sticky;
+      top: 16px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .side-panel {
+      padding: 16px;
+    }
+
+    .side-panel h2 {
+      margin-bottom: 10px;
+      font-size: 1.05rem;
+    }
+
+    .side-panel ul {
+      margin: 0;
+      padding-left: 1.1rem;
+      color: var(--muted);
+    }
+
+    .side-panel li {
+      margin: 8px 0;
+    }
+
+    .current-plan {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .plan-line {
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(238, 244, 236, .72);
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    .plan-line strong {
+      display: block;
+      color: var(--green-dark);
+    }
+
+    .summary {
+      display: grid;
+      gap: 12px;
+    }
+
+    .summary-card {
+      padding: 16px;
+    }
+
+    .summary-card h3 {
+      margin-bottom: 8px;
+      font-size: 1.08rem;
+    }
+
+    .summary-card p {
+      margin: 8px 0;
+    }
+
+    .summary-card ul {
+      margin: 8px 0 0;
+      padding-left: 1.15rem;
+      color: var(--muted);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 860px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .side {
+        position: static;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .shell {
+        width: min(100% - 18px, 1120px);
+        padding-top: 9px;
+      }
+
+      .steps {
+        grid-template-columns: repeat(5, 1fr);
+      }
+
+      .day-title {
+        display: grid;
+      }
+
+      .choice {
+        grid-template-columns: 28px 1fr;
+      }
+
+      .actions {
+        display: grid;
+      }
+
+      .action-group,
+      .button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <nav class="top-nav" aria-label="Navigation principale">
+      <a class="home-link" href="index.html">Accueil</a>
+      <a class="home-link" href="beauval-grands-animaux.html">Beauval</a>
+      <a class="home-link" href="puy-du-fou-1-jour.html">Puy du Fou</a>
+      <a class="home-link" href="saint-nazaire.html">Saint-Nazaire</a>
+      <a class="home-link" href="dinan.html">Dinan</a>
+      <a class="home-link" href="mont-saint-michel.html">Mont-Saint-Michel</a>
+      <a class="home-link" href="jeu-roadtrip.html" aria-current="page">Mini-jeu</a>
+    </nav>
+
+    <header class="hero">
+      <div>
+        <p class="kicker">Jeu textuel du road trip</p>
+        <h1>Choisis ton programme</h1>
+      </div>
+      <p>Pour chaque jour, choisis une orientation de visite. Le jeu garde tes choix pendant la partie, te laisse revenir corriger, puis affiche un récapitulatif avec les activités laissées de côté.</p>
+    </header>
+
+    <main class="layout">
+      <section class="game" aria-labelledby="game-title">
+        <div class="game-head">
+          <p class="kicker" id="round-label">Jour 1 sur 5</p>
+          <h2 id="game-title">Beauval</h2>
+          <div class="steps" aria-label="Progression du jeu" id="steps"></div>
+        </div>
+
+        <div class="round" id="round"></div>
+
+        <div class="actions">
+          <p class="status" id="status" aria-live="polite">Choisis une option pour continuer.</p>
+          <div class="action-group">
+            <button class="button secondary" type="button" id="backButton">Précédent</button>
+            <button class="button red" type="button" id="restartButton">Recommencer</button>
+            <button class="button" type="button" id="nextButton">Suivant</button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="side">
+        <section class="side-panel" aria-labelledby="rules-title">
+          <h2 id="rules-title">Règles rapides</h2>
+          <ul>
+            <li>Un seul choix de texte par jour.</li>
+            <li>Les horaires, billets, météo et marées restent à vérifier le jour même.</li>
+            <li>Tu peux revenir en arrière avant le récapitulatif.</li>
+          </ul>
+        </section>
+
+        <section class="side-panel" aria-labelledby="plan-title">
+          <h2 id="plan-title">Choix actuels</h2>
+          <div class="current-plan" id="currentPlan"></div>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <script>
+    const days = [
+      {
+        id: "beauval",
+        date: "09/09",
+        title: "Beauval",
+        intro: "Le premier jour sert à régler le rythme du voyage. Beauval propose beaucoup d'étapes, mais le coeur du jeu est de choisir ce que la famille veut prioriser.",
+        sources: [
+          { href: "beauval-grands-animaux.html", label: "Revoir la page Beauval" }
+        ],
+        choices: [
+          {
+            id: "grands-animaux",
+            title: "Priorité grands animaux",
+            text: "Entrée Sud, savane africaine, rhinocéros, éléphants, hippopotames, lions, gorilles et pandas.",
+            tags: ["priorité 1", "journée complète", "marche"],
+            consequence: "Bon choix si vous voulez respecter l'esprit de la page Beauval : les grands animaux d'abord, les options seulement si l'énergie suit."
+          },
+          {
+            id: "arrivee-tardive",
+            title: "Arrivée après 10 h",
+            text: "On coupe les options et on garde seulement éléphants, hippopotames, lions, gorilles et pandas.",
+            tags: ["anti-retard", "essentiel", "moins d'allers-retours"],
+            consequence: "Le programme devient plus robuste : moins de choses, mais les incontournables restent protégés."
+          },
+          {
+            id: "famille-calme",
+            title: "Version famille tranquille",
+            text: "Même trajet, mais avec pauses plus longues, repas simple et acceptation de supprimer les ours ou une zone dense.",
+            tags: ["avec enfants", "pauses", "souple"],
+            consequence: "Le rythme est plus doux, utile si la première journée doit économiser les jambes pour la suite."
+          }
+        ]
+      },
+      {
+        id: "puy-du-fou",
+        date: "10/09",
+        title: "Puy du Fou",
+        intro: "Ici, la règle du jeu est différente : les horaires des spectacles commandent tout. Il faut choisir une stratégie avant de remplir les creux.",
+        sources: [
+          { href: "puy-du-fou-1-jour.html", label: "Revoir la page Puy du Fou" }
+        ],
+        choices: [
+          {
+            id: "quatre-grands-shows",
+            title: "Bloquer les 4 grands horaires",
+            text: "Signe du Triomphe, Vikings, Bal des Oiseaux Fantômes et Secret de la Lance comme ossature de la journée.",
+            tags: ["priorité 1", "horaires", "spectacles"],
+            consequence: "C'est la stratégie la plus solide : elle évite de disperser la journée avec trop d'expériences secondaires."
+          },
+          {
+            id: "journee-enfants",
+            title: "Avec enfants et moins d'attente",
+            text: "On garde Signe du Triomphe, Vikings et Oiseaux, puis on choisit une expérience immersive seulement si le créneau tombe bien.",
+            tags: ["famille", "moins d'attente", "assis"],
+            consequence: "La journée perd un peu en quantité, mais gagne en confort et en humeur générale."
+          },
+          {
+            id: "option-nocturne",
+            title: "Maximum spectacles avec soirée",
+            text: "On ajoute Mousquetaires ou Dernier Panache, puis Noces de Feu ou Cinéscénie selon le billet.",
+            tags: ["ambitieux", "soirée", "à vérifier"],
+            consequence: "Fort potentiel, mais seulement si le billet, les horaires et la fatigue du groupe suivent vraiment."
+          }
+        ]
+      },
+      {
+        id: "saint-nazaire",
+        date: "11/09",
+        title: "Saint-Nazaire",
+        intro: "Après deux grosses journées, Saint-Nazaire sert de respiration maritime. Le bon choix dépend surtout de la météo et de l'envie de visites intérieures.",
+        sources: [
+          { href: "saint-nazaire.html", label: "Revoir la page Saint-Nazaire" }
+        ],
+        choices: [
+          {
+            id: "paquebots-sous-marin",
+            title: "Paquebots puis sous-marin",
+            text: "Escal'Atlantic le matin, déjeuner, Espadon l'après-midi, puis petite marche sur le front de mer.",
+            tags: ["priorité", "intérieur", "maritime"],
+            consequence: "C'est le programme le plus fidèle à la page : deux visites fortes et une fin plus légère."
+          },
+          {
+            id: "pluie-interieur",
+            title: "Plan météo grise",
+            text: "Escal'Atlantic en priorité, puis Écomusée ou EOL si les créneaux et l'envie sont bons.",
+            tags: ["pluie", "intérieur", "souple"],
+            consequence: "Le voyage reste confortable même si le front de mer devient moins agréable."
+          },
+          {
+            id: "ocean-lent",
+            title: "Respiration face à l'océan",
+            text: "Une seule visite, puis front de mer, pêcheries et plage de Monsieur Hulot à Saint-Marc-sur-Mer.",
+            tags: ["balade", "repos", "bord de mer"],
+            consequence: "Moins de contenu, mais une vraie coupure avant Dinan et le Mont-Saint-Michel."
+          }
+        ]
+      },
+      {
+        id: "dinan-mont",
+        date: "12/09",
+        title: "Dinan + Mont-Saint-Michel",
+        intro: "Cette journée combine deux lieux avec pavés, pentes, accès et marge de route. Le choix doit protéger l'énergie du groupe.",
+        sources: [
+          { href: "dinan.html", label: "Revoir la page Dinan" },
+          { href: "mont-saint-michel.html", label: "Revoir la page Mont-Saint-Michel" }
+        ],
+        choices: [
+          {
+            id: "equilibre",
+            title: "Équilibre patrimoine",
+            text: "Dinan ville haute et Jardin anglais, puis Mont avec village, remparts, abbaye et terrasse de l'Ouest.",
+            tags: ["équilibré", "abbaye", "2 lieux"],
+            consequence: "C'est le meilleur compromis : Dinan reste léger et le Mont garde sa visite phare."
+          },
+          {
+            id: "dinan-plus",
+            title: "Dinan plus complet",
+            text: "Centre historique, Jerzual, port sur la Rance, remparts, puis Mont en version extérieure sans abbaye si le temps manque.",
+            tags: ["Dinan", "pente", "extérieur"],
+            consequence: "Beau pour flâner, mais attention à la remontée du Jerzual et à la marge pour rejoindre le Mont."
+          },
+          {
+            id: "mont-prioritaire",
+            title: "Mont-Saint-Michel prioritaire",
+            text: "Dinan très court, puis passerelle, village, remparts, Saint-Pierre, abbaye, cloître, terrasse et descente par les ruelles.",
+            tags: ["Mont", "abbaye", "marées"],
+            consequence: "Le choix le plus cohérent si vous voulez vraiment profiter du Mont sans regarder l'heure toutes les cinq minutes."
+          }
+        ]
+      },
+      {
+        id: "paris",
+        date: "13/09",
+        title: "Retour Paris",
+        intro: "Le retour n'a pas de page dédiée. On garde donc volontairement un choix simple, comme indiqué dans l'accueil.",
+        sources: [
+          { href: "index.html", label: "Revoir l'accueil" }
+        ],
+        choices: [
+          {
+            id: "balade-simple",
+            title: "Balade simple",
+            text: "Une promenade courte et facile, sans nouvelle grosse visite, pour terminer le voyage en douceur.",
+            tags: ["retour", "souple", "gratuit"],
+            consequence: "La fin reste légère, ce qui convient bien après quatre jours denses."
+          },
+          {
+            id: "repas-sympa",
+            title: "Repas sympa",
+            text: "On choisit surtout un bon repas et on accepte de ne pas ajouter d'activité compliquée.",
+            tags: ["repas", "repos", "famille"],
+            consequence: "Bon choix si la priorité est de finir ensemble, tranquillement, avant de rentrer."
+          },
+          {
+            id: "rien-charger",
+            title: "Ne rien charger",
+            text: "Retour direct ou pause minimale, selon la fatigue, la route et les bagages.",
+            tags: ["fatigue", "sécurité", "minimal"],
+            consequence: "Ce n'est pas spectaculaire, mais parfois c'est exactement le bon choix pour garder un bon souvenir du voyage."
+          }
+        ]
+      }
+    ];
+
+    const state = {
+      currentDay: 0,
+      choices: {}
+    };
+
+    const round = document.querySelector("#round");
+    const roundLabel = document.querySelector("#round-label");
+    const gameTitle = document.querySelector("#game-title");
+    const steps = document.querySelector("#steps");
+    const status = document.querySelector("#status");
+    const currentPlan = document.querySelector("#currentPlan");
+    const backButton = document.querySelector("#backButton");
+    const nextButton = document.querySelector("#nextButton");
+    const restartButton = document.querySelector("#restartButton");
+
+    function selectedChoice(day) {
+      const choiceId = state.choices[day.id];
+      return day.choices.find((choice) => choice.id === choiceId);
+    }
+
+    function renderSteps() {
+      steps.innerHTML = days.map((day, index) => {
+        const classes = [
+          "step",
+          index === state.currentDay ? "active" : "",
+          state.choices[day.id] ? "done" : ""
+        ].filter(Boolean).join(" ");
+        return `<span class="${classes}" aria-label="${day.title}"></span>`;
+      }).join("");
+    }
+
+    function renderPlan() {
+      currentPlan.innerHTML = days.map((day) => {
+        const choice = selectedChoice(day);
+        const text = choice ? choice.title : "Pas encore choisi";
+        return `<div class="plan-line"><strong>${day.date} - ${day.title}</strong>${text}</div>`;
+      }).join("");
+    }
+
+    function renderDay() {
+      const day = days[state.currentDay];
+      const choice = selectedChoice(day);
+
+      roundLabel.textContent = `Jour ${state.currentDay + 1} sur ${days.length} - ${day.date}`;
+      gameTitle.textContent = day.title;
+      round.innerHTML = `
+        <div class="day-title">
+          <h2>${day.title}</h2>
+          <span>${day.date}</span>
+        </div>
+        <p class="day-intro">${day.intro}</p>
+        <fieldset class="choices">
+          <legend class="sr-only">Choisir une option pour ${day.title}</legend>
+          ${day.choices.map((item) => `
+            <label class="choice ${choice && choice.id === item.id ? "selected" : ""}">
+              <input type="radio" name="choice" value="${item.id}" ${choice && choice.id === item.id ? "checked" : ""}>
+              <span>
+                <strong>${item.title}</strong>
+                <p>${item.text}</p>
+                <span class="meta">${item.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}</span>
+              </span>
+            </label>
+          `).join("")}
+        </fieldset>
+        <p class="feedback" id="feedback">${choice ? choice.consequence : "Choisis l'option qui ressemble le plus à votre vraie journée."}</p>
+      `;
+
+      round.querySelectorAll("input").forEach((input) => {
+        input.addEventListener("change", () => {
+          state.choices[day.id] = input.value;
+          const nextChoice = selectedChoice(day);
+          round.querySelectorAll(".choice").forEach((label) => {
+            const radio = label.querySelector("input");
+            label.classList.toggle("selected", radio.checked);
+          });
+          document.querySelector("#feedback").textContent = nextChoice.consequence;
+          updateControls();
+          renderPlan();
+          renderSteps();
+        });
+      });
+
+      updateControls();
+      renderPlan();
+      renderSteps();
+    }
+
+    function renderSummary() {
+      roundLabel.textContent = "Récapitulatif";
+      gameTitle.textContent = "Votre road trip choisi";
+      steps.innerHTML = days.map((day) => `<span class="step done" aria-label="${day.title}"></span>`).join("");
+      status.textContent = "Récapitulatif prêt. Tu peux revenir corriger un jour ou recommencer.";
+      nextButton.textContent = "Corriger";
+      backButton.disabled = false;
+
+      round.innerHTML = `
+        <div class="summary">
+          ${days.map((day) => {
+            const choice = selectedChoice(day);
+            const skipped = day.choices.filter((item) => item.id !== choice.id);
+            return `
+              <article class="summary-card">
+                <h3>${day.date} - ${day.title}</h3>
+                <p><strong>Choix retenu :</strong> ${choice.title}</p>
+                <p>${choice.text}</p>
+                <p><strong>À garder en tête :</strong> ${choice.consequence}</p>
+                <p><strong>Activités non sélectionnées :</strong></p>
+                <ul>${skipped.map((item) => `<li>${item.title}</li>`).join("")}</ul>
+                <p>${day.sources.map((source) => `<a href="${source.href}">${source.label}</a>`).join(" · ")}</p>
+              </article>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
+
+    function updateControls() {
+      const day = days[state.currentDay];
+      const hasChoice = Boolean(state.choices[day.id]);
+      backButton.disabled = state.currentDay === 0;
+      nextButton.disabled = !hasChoice;
+      nextButton.textContent = state.currentDay === days.length - 1 ? "Voir le récapitulatif" : "Suivant";
+      status.textContent = hasChoice
+        ? "Choix enregistré pour cette partie."
+        : "Choisis une option pour continuer.";
+    }
+
+    function restart() {
+      state.currentDay = 0;
+      state.choices = {};
+      nextButton.textContent = "Suivant";
+      renderDay();
+    }
+
+    backButton.addEventListener("click", () => {
+      if (gameTitle.textContent === "Votre road trip choisi") {
+        state.currentDay = days.length - 1;
+        renderDay();
+        return;
+      }
+      state.currentDay = Math.max(0, state.currentDay - 1);
+      renderDay();
+    });
+
+    nextButton.addEventListener("click", () => {
+      if (gameTitle.textContent === "Votre road trip choisi") {
+        state.currentDay = 0;
+        renderDay();
+        return;
+      }
+      if (!state.choices[days[state.currentDay].id]) {
+        updateControls();
+        return;
+      }
+      if (state.currentDay === days.length - 1) {
+        renderSummary();
+        return;
+      }
+      state.currentDay += 1;
+      renderDay();
+    });
+
+    restartButton.addEventListener("click", restart);
+
+    renderDay();
+  </script>
+</body>
+</html>
