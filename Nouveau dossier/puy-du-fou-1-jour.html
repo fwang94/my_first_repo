@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Puy du Fou en 1 jour - Grands spectacles</title>
+  <meta name="description" content="Page pratique pour organiser une journee au Puy du Fou autour des grands spectacles incontournables.">
+  <style>
+    :root {
+      --ink: #211916;
+      --muted: #665b54;
+      --paper: #f7f1e6;
+      --ivory: #fffaf2;
+      --red: #9f1f1f;
+      --red-dark: #651717;
+      --gold: #c9922e;
+      --forest: #273f2b;
+      --blue: #d9e5e8;
+      --line: rgba(33, 25, 22, .16);
+      --shadow: 0 18px 42px rgba(49, 34, 25, .16);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, rgba(101, 23, 23, .18), transparent 270px),
+        linear-gradient(135deg, #f3ead8 0%, #faf7ef 42%, #eaf0ea 100%);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    a {
+      color: var(--red-dark);
+      font-weight: 800;
+      text-underline-offset: .18em;
+    }
+
+    button,
+    input { font: inherit; }
+
+    .shell {
+      width: min(1180px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 22px 0 42px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(280px, .95fr);
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .top-nav { flex-wrap: wrap; gap: 8px;
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      gap: 8px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .home-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 14px;
+      border-radius: 8px;
+      background: var(--red-dark);
+      color: var(--ivory);
+      text-decoration: none;
+      font-weight: 850;
+      box-shadow: var(--shadow);
+    }
+
+    .panel,
+    .controls,
+    .step,
+    .weather,
+    .note,
+    .sources {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 250, 242, .9);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero {
+      min-height: 360px;
+      padding: clamp(20px, 4vw, 34px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 230px;
+      height: 230px;
+      right: -60px;
+      bottom: -70px;
+      border-radius: 50%;
+      background: conic-gradient(from 90deg, rgba(159,31,31,.30), rgba(201,146,46,.30), rgba(39,63,43,.24), rgba(159,31,31,.30));
+    }
+
+    .kicker {
+      margin: 0 0 10px;
+      color: var(--red-dark);
+      font-size: .84rem;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    h1 {
+      max-width: 12ch;
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.6rem, 8vw, 6rem);
+      line-height: .9;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      max-width: 66ch;
+      margin: 20px 0 0;
+      color: var(--muted);
+      font-size: 1.04rem;
+    }
+
+    .stats {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 26px;
+    }
+
+    .stat {
+      padding: 14px;
+      border-radius: 8px;
+      background: rgba(247, 241, 230, .88);
+      border: 1px solid rgba(159, 31, 31, .14);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.35rem;
+      line-height: 1;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .image-panel {
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: 205px 1fr;
+      min-height: 360px;
+    }
+
+    .photo {
+      min-height: 205px;
+      background:
+        linear-gradient(180deg, rgba(33, 25, 22, .08), rgba(33, 25, 22, .52)),
+        url("images/puy-du-fou.jpg");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .logic {
+      padding: 18px;
+      background: var(--forest);
+      color: #fffaf2;
+    }
+
+    .logic h2 {
+      margin: 0 0 12px;
+      font-size: 1.1rem;
+    }
+
+    .logic p {
+      margin: 10px 0 0;
+      color: rgba(255, 250, 242, .86);
+    }
+
+    .page-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      margin-top: 14px;
+      padding: 0 14px;
+      border-radius: 8px;
+      background: var(--gold);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 850;
+    }
+
+    .controls {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      margin-bottom: 18px;
+      padding: 12px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .mode {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .mode button {
+      min-height: 42px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--ivory);
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .mode button.active {
+      background: var(--red);
+      color: white;
+      border-color: var(--red);
+    }
+
+    .progress {
+      min-width: 220px;
+      text-align: right;
+    }
+
+    .progress strong,
+    .progress span { display: block; }
+
+    .progress span {
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 330px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .route {
+      display: grid;
+      gap: 12px;
+    }
+
+    .step {
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 118px 1fr;
+    }
+
+    .time {
+      padding: 18px 14px;
+      background: #ead7b2;
+      border-right: 1px solid var(--line);
+      font-weight: 850;
+    }
+
+    .time span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: .84rem;
+      font-weight: 700;
+    }
+
+    .body {
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .head {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: start;
+    }
+
+    .step h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      line-height: 1.25;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .tag {
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: #f3ead8;
+      color: var(--red-dark);
+      font-size: .82rem;
+      font-weight: 800;
+    }
+
+    .check {
+      display: inline-grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+    }
+
+    .check input {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--red);
+      cursor: pointer;
+    }
+
+    .step.done {
+      opacity: .62;
+    }
+
+    .step.done h2 {
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+      text-decoration-color: rgba(159, 31, 31, .46);
+    }
+
+    aside {
+      position: sticky;
+      top: 88px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .note,
+    .weather,
+    .sources {
+      padding: 16px;
+    }
+
+    .note h2,
+    .weather h2,
+    .sources h2 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+    }
+
+    .weather-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .weather-day {
+      display: grid;
+      grid-template-columns: 58px 1fr;
+      gap: 10px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(247, 241, 230, .78);
+    }
+
+    .weather-day strong,
+    .weather-day span {
+      display: block;
+    }
+
+    .weather-day strong {
+      color: var(--red-dark);
+      font-size: .9rem;
+    }
+
+    .weather-day span {
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .weather-day.today {
+      background: var(--red-dark);
+      color: var(--ivory);
+    }
+
+    .weather-day.today strong,
+    .weather-day.today span {
+      color: var(--ivory);
+    }
+
+    .note ul,
+    .sources ul {
+      margin: 0;
+      padding-left: 1.15rem;
+      color: var(--muted);
+    }
+
+    .note li,
+    .sources li {
+      margin: 8px 0;
+    }
+
+    .priority {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+    }
+
+    .priority div {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 8px;
+      align-items: center;
+      color: var(--muted);
+    }
+
+    .rank {
+      display: inline-grid;
+      place-items: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--red);
+      color: white;
+      font-size: .82rem;
+      font-weight: 850;
+    }
+
+    @media (max-width: 860px) {
+      header,
+      main,
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
+      .hero { min-height: auto; }
+      .controls,
+      aside { position: static; }
+      .progress { text-align: left; }
+      .stats { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .shell {
+        width: min(100% - 18px, 1180px);
+        padding-top: 9px;
+      }
+
+      .step { grid-template-columns: 1fr; }
+      .time {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+        padding: 12px 14px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="photos.css">
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <nav class="top-nav" aria-label="Navigation principale" style="flex-wrap:wrap;gap:8px"><a class="home-link" href="index.html">Accueil</a>
+<a class="home-link" href="beauval-grands-animaux.html">Beauval</a>
+<a class="home-link" href="puy-du-fou-1-jour.html" aria-current="page">Puy du Fou</a>
+<a class="home-link" href="saint-nazaire.html">Saint-Nazaire</a>
+<a class="home-link" href="dinan.html">Dinan</a>
+<a class="home-link" href="mont-saint-michel.html">Mont-Saint-Michel</a></nav>
+
+      <section class="panel hero" aria-labelledby="page-title">
+        <div>
+          <p class="kicker">Puy du Fou</p>
+          <h1 id="page-title">Grands spectacles en 1 jour</h1>
+          <p>Un parcours pour voir les spectacles les plus marquants sans courir partout. Les horaires exacts sortent peu avant la visite : utilisez cette page comme ordre de priorite, puis ajustez avec le programme du jour.</p>
+        </div>
+        <div class="stats" aria-label="Resume de la visite">
+          <div class="stat"><strong>9 h</strong><span>ouverture courante</span></div>
+          <div class="stat"><strong>6</strong><span>grands spectacles</span></div>
+          <div class="stat"><strong>30 min</strong><span>marge avant chaque show</span></div>
+        </div>
+      </section>
+
+      <section class="panel image-panel" aria-label="Apercu du Puy du Fou">
+        <div class="photo" role="img" aria-label="Spectacle Les Vikings au Puy du Fou"></div>
+        <div class="logic">
+          <h2>Principe du parcours</h2>
+          <p>Le Puy du Fou se visite mieux comme une journee de spectacles. Visez d'abord les grandes jauges, placez les experiences immersives dans les trous, et gardez la soiree pour les Noces de Feu ou la Cinescenie si votre billet le permet.</p>
+          <a class="page-link" href="beauval-grands-animaux.html">Voir la page Beauval</a>
+        </div>
+      </section>
+    </header>
+<figure class="trip-photo"><img src="images/puy-du-fou.jpg" alt="Scène du spectacle Les Vikings au Puy du Fou" width="1600" height="900" decoding="async"><figcaption>Scène du spectacle Les Vikings au Puy du Fou · <a href="https://www.destination-vendeegrandlittoral.com/">Destination Vendée Grand Littoral</a></figcaption></figure>
+
+    <section class="controls" aria-label="Reglages">
+      <div class="mode">
+        <button type="button" class="active" data-mode="balanced">Journee equilibree</button>
+        <button type="button" data-mode="children">Avec enfants</button>
+        <button type="button" data-mode="ambitious">Maximum spectacles</button>
+      </div>
+      <div class="progress" aria-live="polite">
+        <strong id="progressText">0 / 9 etapes faites</strong>
+        <span id="modeText">Gardez 30 min d'avance avant chaque grand spectacle.</span>
+      </div>
+    </section>
+
+    <main>
+      <section class="route" aria-label="Itineraire conseille">
+        <article class="step" data-balanced="25" data-children="35" data-ambitious="20">
+          <div class="time">09:00<span>Entree</span></div>
+          <div class="body">
+            <div class="head">
+              <h2>Prendre le programme du jour et choisir les 4 horaires fixes</h2>
+              <label class="check" aria-label="Marquer cette etape comme faite"><input type="checkbox"></label>
+            </div>
+            <p>Bloquez d'abord les horaires du Signe du Triomphe, des Vikings, du Bal des Oiseaux Fantomes et du Secret de la Lance. Le reste se cale autour.</p>
+            <div class="tags"><span class="tag">programme</span><span class="tag">strategie</span></div>
+          </div>
+        </article>
+
+        <article class="step" data-balanced="55" data-children="65" data-ambitious="45">
+          <div class="time">09:30<span>Grand show 1</span></div>
+          <div class="body">
+            <div class="head">
+              <h2>Le Signe du Triomphe</h2>
+              <label class="check" aria-label="Marquer cette etape comme faite"><input type="checkbox"></label>
+            </div>
+            <p>Commencez par l'arene romaine si un horaire matinal existe. C'est spectaculaire, assis, et parfait pour lancer la journee.</p>
+            <div class="tags"><span class="tag">30 min</span><span class="tag">arene romaine</span><span class="tag">priorite 1</span></div>
+          </div>
+        </article>
+
+        <article class="step" data-balanced="35" data-children="45" data-ambitious="25">
+          <div class="time">10:35<span>Immersion</span></div>
+          <div class="body">
+            <div class="head">
+              <h2>Le Mystere de La Perouse ou Le Premier Royaume</h2>
+              <label class="check" aria-label="Marquer cette etape comme faite"><input type="checkbox"></label>
+            </div>
+            <p>Glissez une experience immersive dans le premier creux horaire. Elle absorbe moins de temps qu'un grand spectacle et evite les attentes inutiles.</p>
+            <div class="tags"><span class="tag">file variable</span><span class="tag">interieur</span></div>
+          </div>
+        </article>
+
+        <article class="step" data-balanced="55" data-children="70" data-ambitious="45">
+          <div class="time">11:30<span>Grand show 2</span></div>
+          <div class="body">
+            <div class="head">
+              <h2>Les Vikings</h2>
+              <label class="check" aria-label="Marquer cette etape comme faite"><input type="checkbox"></label>
+            </div>
+            <p>Visez une representation avant le dejeuner : grand decor, effets de feu, drakkars et rythme tres familial.</p>
+            <div class="tags"><span class="tag">26 min</span><span class="tag">plein air</span><span class="tag">priorite 1</span></div>
+          </div>
+        </article>
+
+        <article class="step" data-balanced="60" data-children="75" data-ambitious="45">
+          <div class="time">12:30<span>Pause</span></div>
+          <div class="body">
+            <div class="head">
+              <h2>Dejeuner proche du prochain spectacle</h2>
+              <label class="check" aria-label="Marquer cette etape comme faite"><input type="checkbox"></label>
+            </div>
+            <p>Mangez dans la zone ou vous devez etre ensuite. Au Puy du Fou, traverser le parc pour un restaurant peut faire perdre le meilleur horaire.</p>
+            <div class="tags"><span class="tag">repos</span><span class="tag">gain de temps</span></div>
+          </div>
+        </article>
+
+        <article class="step" data-balanced="55" data-children="65" data-ambitious="45">
+          <div class="time">13:45<span>Grand show 3</span></div>
+          <div class="body">
+            <div class="head">
+              <h2>Le Bal des Oiseaux Fantomes</h2>
+              <label class="check" aria-label="Marquer cette etape comme faite"><input type="checkbox"></label>
+            </div>
+            <p>Gardez une vraie marge pour le placement. C'est l'un des spectacles les plus sensibles a la meteo et a l'affluence.</p>
+            <div class="tags"><span class="tag">oiseaux</span><span class="tag">plein air</span><span class="tag">priorite 1</span></div>
+          </div>
+        </article>
+
+        <article class="step" data-balanced="50" data-children="60" data-ambitious="40">
+          <div class="time">15:00<span>Grand show 4</span></div>
+          <div class="body">
+            <div class="head">
+              <h2>Le Secret de la Lance ou L'Epee du Roi Arthur</h2>
+              <label class="check" aria-label="Marquer cette etape comme faite"><input type="checkbox"></label>
+            </div>
+            <p>Choisissez selon l'horaire disponible. Le Secret de la Lance est un classique medieval ; L'Epee du Roi Arthur est une priorite recente si vous ne l'avez jamais vu.</p>
+            <div class="tags"><span class="tag">chevalerie</span><span class="tag">effets speciaux</span></div>
+          </div>
+        </article>
+
+        <article class="step" data-balanced="55" data-children="70" data-ambitious="45">
+          <div class="time">16:20<span>Grand show 5</span></div>
+          <div class="body">
+            <div class="head">
+              <h2>Les Mousquetaires de Richelieu ou Le Dernier Panache</h2>
+              <label class="check" aria-label="Marquer cette etape comme faite"><input type="checkbox"></label>
+            </div>
+            <p>Placez ici un spectacle couvert ou semi-couvert pour finir l'apres-midi avec moins de marche et un peu de confort.</p>
+            <div class="tags"><span class="tag">couvert</span><span class="tag">apres-midi</span></div>
+          </div>
+        </article>
+
+        <article class="step" data-balanced="80" data-children="95" data-ambitious="65">
+          <div class="time">Soiree<span>Selon billet</span></div>
+          <div class="body">
+            <div class="head">
+              <h2>Noces de Feu ou Cinescenie</h2>
+              <label class="check" aria-label="Marquer cette etape comme faite"><input type="checkbox"></label>
+            </div>
+            <p>Les Noces de Feu sont incluses certains soirs selon calendrier. La Cinescenie demande une reservation separee et dure environ 1 h 30.</p>
+            <div class="tags"><span class="tag">nocturne</span><span class="tag">a verifier</span></div>
+          </div>
+        </article>
+      </section>
+
+      <aside>
+        <section class="weather" aria-label="Meteo du roadtrip">
+          <h2>Meteo du roadtrip</h2>
+          <div class="weather-list">
+            <div class="weather-day">
+              <strong>09/09</strong>
+              <span>Beauval : couvert mais sec, 9-22°C. Bonne journee pour marcher et observer les grands animaux.</span>
+            </div>
+            <div class="weather-day today">
+              <strong>10/09</strong>
+              <span>Puy du Fou : frais et couvert, 12-17°C. Prevoir veste legere pour les attentes en exterieur.</span>
+            </div>
+            <div class="weather-day">
+              <strong>11/09</strong>
+              <span>Saint-Nazaire : variable, 17-21°C. Petite averse possible, bon plan pour Escal'Atlantic.</span>
+            </div>
+            <div class="weather-day">
+              <strong>12/09</strong>
+              <span>Mont-Saint-Michel : frais, bruine possible, 12-18°C. Coupe-vent utile sur la baie.</span>
+            </div>
+            <div class="weather-day">
+              <strong>13/09</strong>
+              <span>Paris : plutot lumineux, 13-23°C. Journee favorable pour balade urbaine.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="note">
+          <h2>Regles du jour J</h2>
+          <ul>
+            <li>Consultez le programme la veille a partir de 17 h 30 ou dans l'application.</li>
+            <li>Arrivez 30 minutes avant les grands spectacles, plus si le parc est tres charge.</li>
+            <li>Si deux horaires se chevauchent, gardez d'abord Signe du Triomphe, Vikings, Bal des Oiseaux et Secret de la Lance.</li>
+            <li>Utilisez les experiences immersives pour remplir les creux, pas comme ossature principale.</li>
+          </ul>
+          <div class="priority" aria-label="Priorites">
+            <div><span class="rank">1</span><span>Signe du Triomphe, Vikings, Bal des Oiseaux</span></div>
+            <div><span class="rank">2</span><span>Secret de la Lance, Roi Arthur, Mousquetaires</span></div>
+            <div><span class="rank">3</span><span>Dernier Panache, immersifs, villages</span></div>
+          </div>
+        </section>
+
+        <section class="sources">
+          <h2>Liens utiles</h2>
+          <ul>
+            <li><a href="https://www.puydufou.com/france/fr/programme-du-jour" target="_blank" rel="noreferrer">Programme du jour</a></li>
+            <li><a href="https://www.puydufou.com/france/fr/calendrier-horaires" target="_blank" rel="noreferrer">Calendrier et horaires</a></li>
+            <li><a href="https://www.puydufou.com/france/fr/application-mobile-puy-du-fou" target="_blank" rel="noreferrer">Application mobile</a></li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <script>
+    const steps = Array.from(document.querySelectorAll(".step"));
+    const checks = Array.from(document.querySelectorAll(".check input"));
+    const buttons = Array.from(document.querySelectorAll("[data-mode]"));
+    const progressText = document.querySelector("#progressText");
+    const modeText = document.querySelector("#modeText");
+    const labels = {
+      balanced: "Gardez 30 min d'avance avant chaque grand spectacle.",
+      children: "Ajoutez des pauses et reduisez les immersifs si les files fatiguent le groupe.",
+      ambitious: "Possible seulement avec horaires favorables et peu d'attente."
+    };
+    let mode = "balanced";
+
+    function toTime(minutes) {
+      const h = Math.floor(minutes / 60);
+      const m = minutes % 60;
+      if (!h) return `${m} min`;
+      return m ? `${h} h ${String(m).padStart(2, "0")}` : `${h} h`;
+    }
+
+    function update() {
+      const done = checks.filter((check) => check.checked).length;
+      const remaining = steps.reduce((total, step) => {
+        const check = step.querySelector("input");
+        return check.checked ? total : total + Number(step.dataset[mode]);
+      }, 0);
+
+      steps.forEach((step) => {
+        step.classList.toggle("done", step.querySelector("input").checked);
+      });
+
+      progressText.textContent = `${done} / ${steps.length} etapes faites`;
+      modeText.textContent = done === steps.length
+        ? "Journee terminee. Gardez le programme pour retrouver vos coups de coeur."
+        : `${labels[mode]} Reste estime : ${toTime(remaining)}.`;
+    }
+
+    checks.forEach((check) => check.addEventListener("change", update));
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        mode = button.dataset.mode;
+        buttons.forEach((item) => item.classList.toggle("active", item === button));
+        update();
+      });
+    });
+
+    update();
+  </script>
+</body>
+</html>
+
+
+
+
+
+

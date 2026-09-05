@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mont-Saint-Michel : les incontournables — Les Zhu au Zoo</title>
+<meta name="description" content="Abbaye, remparts, ruelles et baie : les choses à voir au Mont-Saint-Michel et un parcours pour l’étape après Dinan.">
+<style>
+
+    :root {
+      --ink: #1d211b;
+      --muted: #60685d;
+      --paper: #f6f2e8;
+      --white: #fffaf1;
+      --green: #315f3e;
+      --green-dark: #1f3f2d;
+      --red: #9c2725;
+      --gold: #cf9632;
+      --blue: #cfe0e6;
+      --line: rgba(29, 33, 27, .16);
+      --shadow: 0 18px 42px rgba(35, 42, 31, .16);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(207, 150, 50, .25), transparent 360px),
+        linear-gradient(135deg, #eef4ec 0%, var(--paper) 48%, #edf5f7 100%);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .shell {
+      width: min(1160px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 22px 0 44px;
+    }
+
+    .hero {
+      min-height: 440px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(290px, .95fr);
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .top-nav { flex-wrap: wrap; gap: 8px;
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .home-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 14px;
+      border-radius: 8px;
+      background: var(--green-dark);
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 850;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-main,
+    .hero-map,
+    .day,
+    .quick-links,
+    .weather {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 250, 241, .9);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-main {
+      padding: clamp(22px, 5vw, 40px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-main::after {
+      content: "";
+      position: absolute;
+      right: -70px;
+      bottom: -90px;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: conic-gradient(from 130deg, rgba(49, 95, 62, .30), rgba(207, 150, 50, .32), rgba(156, 39, 37, .25), rgba(49, 95, 62, .30));
+      opacity: .85;
+    }
+
+    .kicker {
+      margin: 0 0 12px;
+      color: var(--green-dark);
+      font-size: .84rem;
+      font-weight: 850;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 11ch;
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(3rem, 9vw, 7rem);
+      line-height: .88;
+      letter-spacing: 0;
+    }
+
+    .hero-main p {
+      max-width: 65ch;
+      margin: 22px 0 0;
+      color: var(--muted);
+      font-size: 1.08rem;
+    }
+
+    .stats {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    .stat {
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(49, 95, 62, .16);
+      background: rgba(238, 244, 236, .84);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.45rem;
+      line-height: 1;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .hero-map {
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: 230px 1fr;
+    }
+
+    .photo {
+      min-height: 230px;
+      background:
+        linear-gradient(180deg, rgba(29, 33, 27, .08), rgba(29, 33, 27, .50)),
+        url("images/mont-saint-michel.jpg");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .map-copy {
+      padding: 18px;
+      background: var(--green-dark);
+      color: var(--white);
+    }
+
+    .map-copy h2 {
+      margin: 0 0 12px;
+      font-size: 1.1rem;
+    }
+
+    .map-copy p {
+      margin: 0;
+      color: rgba(255, 250, 241, .86);
+    }
+
+    .quick-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px;
+      margin-bottom: 18px;
+    }
+
+    .quick-links strong {
+      font-size: 1rem;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 14px;
+      border-radius: 8px;
+      color: var(--white);
+      background: var(--green);
+      text-decoration: none;
+      font-weight: 850;
+    }
+
+    .button.red {
+      background: var(--red);
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .days {
+      display: grid;
+      gap: 12px;
+    }
+
+    .day {
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 124px 1fr;
+    }
+
+    .date {
+      padding: 18px 14px;
+      background: #e6d5b2;
+      border-right: 1px solid var(--line);
+      font-weight: 850;
+    }
+
+    .date span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: .84rem;
+      font-weight: 700;
+    }
+
+    .day-body {
+      padding: 16px;
+    }
+
+    .day h2 {
+      margin: 0 0 8px;
+      font-size: 1.18rem;
+    }
+
+    .day p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 12px;
+    }
+
+    .tag {
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: #eef4ec;
+      color: var(--green-dark);
+      font-size: .82rem;
+      font-weight: 800;
+    }
+
+    aside {
+      position: sticky;
+      top: 16px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .weather {
+      padding: 16px;
+    }
+
+    .weather h2 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+    }
+
+    .weather-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .weather-day {
+      display: grid;
+      grid-template-columns: 58px 1fr;
+      gap: 10px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(238, 244, 236, .72);
+    }
+
+    .weather-day strong,
+    .weather-day span {
+      display: block;
+    }
+
+    .weather-day strong {
+      color: var(--green-dark);
+      font-size: .9rem;
+    }
+
+    .weather-day span {
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    @media (max-width: 860px) {
+      .hero,
+      main {
+        grid-template-columns: 1fr;
+      }
+
+      aside {
+        position: static;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .shell {
+        width: min(100% - 18px, 1160px);
+        padding-top: 9px;
+      }
+
+      .day {
+        grid-template-columns: 1fr;
+      }
+
+      .date {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+        padding: 12px 14px;
+      }
+    }
+  
+:root { --green: #285e70; --green-dark: #173f50; }
+h1 { max-width: 16ch; font-size: clamp(2.6rem, 7vw, 5.5rem); line-height: 1; }
+.intro { padding: clamp(22px, 5vw, 40px); margin: 18px 0; }
+.intro::after { display: none; } .intro p { max-width: 70ch; }
+.visits { display: grid; gap: 14px; }
+.place { padding: 22px; }
+.place h2 { margin: 6px 0 12px; font-family: Georgia, serif; font-size: 1.6rem; }
+.place p { margin: 10px 0; }
+.label { color: var(--green-dark); font-weight: 800; }
+aside .weather p, aside .weather li { font-size: 1rem; }
+li + li { margin-top: 12px; }
+footer { margin-top: 20px; padding: 20px; }
+a:focus-visible { outline: 3px solid #9c2725; outline-offset: 4px; }
+.home-link[aria-current="page"] { outline: 2px solid var(--gold); outline-offset: 2px; }
+</style>
+  <link rel="stylesheet" href="photos.css">
+</head>
+<body>
+<div class="shell">
+<nav class="top-nav" aria-label="Navigation principale" style="flex-wrap:wrap;gap:8px"><a class="home-link" href="index.html">Accueil</a>
+<a class="home-link" href="beauval-grands-animaux.html">Beauval</a>
+<a class="home-link" href="puy-du-fou-1-jour.html">Puy du Fou</a>
+<a class="home-link" href="saint-nazaire.html">Saint-Nazaire</a>
+<a class="home-link" href="dinan.html">Dinan</a>
+<a class="home-link" href="mont-saint-michel.html" aria-current="page">Mont-Saint-Michel</a></nav>
+<header class="hero-main intro">
+<p class="kicker">Jour 4 · 12 septembre · Après Dinan</p>
+<h1>Le Mont-Saint-Michel</h1>
+<p>L’abbaye au sommet, des passages entre les maisons et la baie à perte de vue : voici les arrêts à privilégier pour profiter du Mont sans courir.</p>
+<div class="tags"><a class="tag" href="#incontournables">Les lieux à voir</a><a class="tag" href="#parcours">Parcours conseillé</a><a class="tag" href="#pratique">Préparer la visite</a></div>
+</header>
+<figure class="trip-photo"><img src="images/mont-saint-michel.jpg" alt="Une visiteuse face au Mont-Saint-Michel au coucher du soleil" width="1600" height="900" decoding="async"><figcaption>Une visiteuse face au Mont-Saint-Michel au coucher du soleil · <a href="https://www.ot-montsaintmichel.com/">Source : Office de tourisme Mont Saint-Michel – Normandie</a></figcaption></figure>
+<main>
+<section class="visits" id="incontournables" aria-label="Les incontournables">
+<article class="weather place">
+<span class="label">01 · La visite phare</span>
+<h2>L’abbaye et son cloître</h2>
+<p>Montez jusqu’à l’abbaye pour découvrir l’église abbatiale, le cloître et le réfectoire. Les salles superposées racontent la vie des moines et donnent toute sa dimension au monument.</p>
+<p><strong>À privilégier si vous ne choisissez qu’une visite intérieure.</strong> Réservez votre entrée et vérifiez l’heure de dernière admission avant de fixer le départ de Dinan.</p>
+<a href="https://www.abbaye-mont-saint-michel.fr/">Visites et billetterie officielles de l’abbaye</a>
+</article>
+<article class="weather place">
+<span class="label">02 · Le grand panorama</span>
+<h2>La terrasse de l’Ouest</h2>
+<p>Dans le parcours de l’abbaye, prenez le temps de regarder la baie depuis ce belvédère. Le paysage de sable et d’eau change avec la marée ; retournez-vous aussi vers l’abbatiale et sa flèche.</p>
+<a href="https://www.abbaye-mont-saint-michel.fr/decouvrir/la-terrasse-de-l-ouest">Découvrir la terrasse de l’Ouest</a>
+</article>
+<article class="weather place">
+<span class="label">03 · La balade à faire</span>
+<h2>Les remparts</h2>
+<p>Parcourez les fortifications pour observer les toits du village et la baie. C’est une belle façon de rejoindre les hauteurs tout en découvrant le côté forteresse du Mont.</p>
+<p><strong>Notre suggestion :</strong> faites une partie de la montée par les remparts et gardez les ruelles pour la descente, selon les accès ouverts.</p>
+</article>
+<article class="weather place">
+<span class="label">04 · Le village médiéval</span>
+<h2>La Grande Rue et les petites ruelles</h2>
+<p>Traversez la Grande Rue pour l’ambiance du village, puis explorez les passages publics et les escaliers latéraux. Levez les yeux sur les façades et ménagez quelques pauses dans la montée.</p>
+<p>Gardez la pause gourmande pour la descente : vous profiterez plus tranquillement de la balade après la visite de l’abbaye.</p>
+</article>
+<article class="weather place">
+<span class="label">05 · Une petite halte</span>
+<h2>L’église Saint-Pierre</h2>
+<p>Arrêtez-vous dans l’église paroissiale du village, distincte de l’abbaye. Une courte visite permet notamment d’y découvrir la statue de saint Michel, dans le respect des offices et du recueillement.</p>
+<a href="https://www.ot-montsaintmichel.com/je-decouvre/visiter-le-mont-saint-michel/je-visite-le-mont-saint-michel/le-village-et-les-remparts/">Repères officiels sur le village et les remparts</a>
+</article>
+<article class="weather place">
+<span class="label">06 · La vue d’ensemble</span>
+<h2>Le Mont depuis la passerelle et la baie</h2>
+<p>À l’arrivée ou au retour, arrêtez-vous sur le cheminement piéton pour contempler la silhouette du Mont. C’est le recul idéal pour une photo de l’ensemble, sans descendre sur les grèves.</p>
+<p>Pour découvrir la baie à pied, prévoyez une sortie dédiée avec un guide professionnel. Ne vous y aventurez pas seuls : marées, cours d’eau et sables mouvants rendent le terrain dangereux.</p>
+<a href="https://www.montsaintmichel.gouv.fr/les-balades-guidees/les-traversees-de-la-baie">Se renseigner sur les sorties guidées</a>
+</article>
+</section>
+<aside>
+<section class="weather" id="parcours">
+<h2>Un parcours après Dinan</h2>
+<p><strong>Prévoir environ 3 à 4 h sur le Mont</strong> avec l’abbaye, hors trajet, parking et accès. C’est une estimation pour organiser votre étape, à adapter au rythme du groupe.</p>
+<ol>
+<li>Photo depuis la passerelle, puis entrée dans le village.</li>
+<li>Montée par les remparts et halte à Saint-Pierre selon votre créneau.</li>
+<li>Abbaye, cloître et terrasse de l’Ouest.</li>
+<li>Descente par les ruelles, pause et dernière vue sur la baie.</li>
+</ol>
+<p><strong>Si vous avez seulement 1 à 2 h :</strong> privilégiez village, remparts et vue extérieure ; gardez l’abbaye pour une visite avec davantage de marge.</p>
+</section>
+<section class="weather" id="pratique">
+<h2>Avant de partir</h2>
+<ul>
+<li>Chaussures confortables : pavés, pentes et nombreux escaliers.</li>
+<li>Un coupe-vent et une protection contre la pluie.</li>
+<li>Ajoutez une marge pour rejoindre le Mont depuis le parking.</li>
+<li>L’accès au village est gratuit ; l’abbaye a une billetterie séparée. Consultez les conditions en vigueur.</li>
+<li>Vérifiez les marées du jour ; une visite ne garantit pas de voir le Mont entouré d’eau.</li>
+</ul>
+<p><a href="https://www.ot-montsaintmichel.com/marees/">Consulter les horaires des marées</a></p>
+<p><a href="https://www.ot-montsaintmichel.com/pratique/faq-foire-aux-questions/">Accès, stationnement et questions pratiques</a></p>
+</section>
+</aside>
+</main>
+<footer class="weather">
+<p>Repères vérifiés le 5 septembre 2026 auprès de l’Office de tourisme et des sites officiels du Mont et de l’abbaye. Les durées et l’ordre du parcours sont nos suggestions.</p>
+<a href="index.html">← Retrouver le programme complet du road trip</a>
+</footer>
+</div>
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,837 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Beauval en 1 jour - Grands animaux</title>
+  <meta name="description" content="Itineraire optimise pour visiter le ZooParc de Beauval en une journee en priorisant les grands animaux.">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #162018;
+      --muted: #5d6a61;
+      --paper: #f7f4eb;
+      --leaf: #2f6b45;
+      --leaf-dark: #1d4932;
+      --sun: #d7a545;
+      --water: #d5e6e8;
+      --sand: #e8dbc0;
+      --line: rgba(22, 32, 24, .16);
+      --white: #fffdfa;
+      --shadow: 0 16px 36px rgba(39, 49, 34, .14);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 6%, rgba(215, 165, 69, .20), transparent 26rem),
+        linear-gradient(180deg, #edf3e8 0%, var(--paper) 42%, #eef4f0 100%);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    a {
+      color: var(--leaf-dark);
+      font-weight: 700;
+      text-underline-offset: .18em;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 22px 0 42px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr);
+      gap: 18px;
+      align-items: stretch;
+      margin-bottom: 18px;
+    }
+
+    .top-nav { flex-wrap: wrap; gap: 8px;
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      gap: 8px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .home-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 14px;
+      border-radius: 8px;
+      background: var(--leaf-dark);
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 850;
+      box-shadow: var(--shadow);
+    }
+
+    .intro,
+    .map-panel,
+    .controls,
+    .stop,
+    .weather,
+    .tips,
+    .sources {
+      border: 1px solid var(--line);
+      background: rgba(255, 253, 250, .86);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .intro {
+      border-radius: 8px;
+      padding: clamp(20px, 4vw, 34px);
+      min-height: 360px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .intro::after {
+      content: "";
+      position: absolute;
+      inset: auto -40px -64px auto;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: conic-gradient(from 130deg, rgba(47, 107, 69, .28), rgba(215, 165, 69, .18), rgba(213, 230, 232, .34), rgba(47, 107, 69, .28));
+      opacity: .75;
+    }
+
+    .kicker {
+      margin: 0 0 10px;
+      color: var(--leaf-dark);
+      font-size: .85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    h1 {
+      max-width: 12ch;
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.65rem, 8vw, 6.2rem);
+      line-height: .9;
+      letter-spacing: 0;
+    }
+
+    .intro p {
+      max-width: 68ch;
+      margin: 20px 0 0;
+      color: var(--muted);
+      font-size: 1.04rem;
+    }
+
+    .hero-stats {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    .stat {
+      padding: 14px;
+      border-radius: 8px;
+      background: rgba(238, 244, 240, .82);
+      border: 1px solid rgba(47, 107, 69, .14);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.35rem;
+      line-height: 1;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .map-panel {
+      border-radius: 8px;
+      overflow: hidden;
+      min-height: 360px;
+      display: grid;
+      grid-template-rows: 190px 1fr;
+    }
+
+    .photo {
+      min-height: 190px;
+      background:
+        linear-gradient(180deg, rgba(22, 32, 24, .04), rgba(22, 32, 24, .46)),
+        url("images/beauval.jpg");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .route-mini {
+      padding: 18px;
+      background: var(--leaf-dark);
+      color: var(--white);
+    }
+
+    .route-mini h2 {
+      margin: 0 0 14px;
+      font-size: 1.1rem;
+    }
+
+    .route-line {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 10px;
+      align-items: start;
+      margin: 9px 0;
+      color: rgba(255, 253, 250, .88);
+      font-size: .96rem;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      margin: 5px auto 0;
+      border-radius: 50%;
+      background: var(--sun);
+      box-shadow: 0 0 0 5px rgba(215, 165, 69, .18);
+    }
+
+    .page-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      margin-top: 14px;
+      padding: 0 14px;
+      border-radius: 8px;
+      background: var(--sun);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 850;
+    }
+
+    .controls {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 18px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .pace {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pace button,
+    .reset {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      color: var(--ink);
+      min-height: 42px;
+      padding: 0 14px;
+      cursor: pointer;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+    }
+
+    .pace button:hover,
+    .reset:hover {
+      transform: translateY(-1px);
+    }
+
+    .pace button.active {
+      background: var(--leaf);
+      color: var(--white);
+      border-color: var(--leaf);
+    }
+
+    .progress {
+      min-width: 210px;
+    }
+
+    .progress strong,
+    .progress span {
+      display: block;
+      text-align: right;
+    }
+
+    .progress span {
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 330px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+    }
+
+    .stop {
+      border-radius: 8px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 116px 1fr;
+    }
+
+    .time {
+      padding: 18px 14px;
+      background: var(--sand);
+      border-right: 1px solid var(--line);
+      font-weight: 850;
+    }
+
+    .time span {
+      display: block;
+      color: var(--muted);
+      font-size: .84rem;
+      font-weight: 650;
+      margin-top: 4px;
+    }
+
+    .stop-body {
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .stop-head {
+      display: flex;
+      gap: 10px;
+      align-items: start;
+      justify-content: space-between;
+    }
+
+    .stop h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      line-height: 1.25;
+    }
+
+    .stop p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .tag {
+      border-radius: 999px;
+      padding: 5px 9px;
+      background: #edf3e8;
+      color: var(--leaf-dark);
+      font-size: .82rem;
+      font-weight: 760;
+    }
+
+    .check {
+      display: inline-grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      flex: 0 0 auto;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--white);
+      cursor: pointer;
+    }
+
+    .check input {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--leaf);
+      cursor: pointer;
+    }
+
+    .stop.done {
+      opacity: .64;
+    }
+
+    .stop.done h2 {
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+      text-decoration-color: rgba(47, 107, 69, .45);
+    }
+
+    aside {
+      display: grid;
+      gap: 14px;
+      position: sticky;
+      top: 88px;
+    }
+
+    .tips,
+    .weather,
+    .sources {
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .tips h2,
+    .weather h2,
+    .sources h2 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+    }
+
+    .weather-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .weather-day {
+      display: grid;
+      grid-template-columns: 58px 1fr;
+      gap: 10px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(237, 243, 232, .72);
+    }
+
+    .weather-day strong,
+    .weather-day span {
+      display: block;
+    }
+
+    .weather-day strong {
+      color: var(--leaf-dark);
+      font-size: .9rem;
+    }
+
+    .weather-day span {
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .weather-day.today {
+      background: var(--leaf-dark);
+      color: var(--white);
+    }
+
+    .weather-day.today strong,
+    .weather-day.today span {
+      color: var(--white);
+    }
+
+    .tips ul,
+    .sources ul {
+      margin: 0;
+      padding-left: 1.15rem;
+      color: var(--muted);
+    }
+
+    .tips li,
+    .sources li {
+      margin: 8px 0;
+    }
+
+    .priority {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+    }
+
+    .priority div {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 8px;
+      align-items: center;
+      color: var(--muted);
+    }
+
+    .rank {
+      display: inline-grid;
+      place-items: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--leaf);
+      color: var(--white);
+      font-size: .82rem;
+      font-weight: 800;
+    }
+
+    @media (max-width: 860px) {
+      header,
+      main {
+        grid-template-columns: 1fr;
+      }
+
+      .intro {
+        min-height: auto;
+      }
+
+      .controls,
+      aside {
+        position: static;
+      }
+
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
+      .progress strong,
+      .progress span {
+        text-align: left;
+      }
+
+      .hero-stats {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .shell {
+        width: min(100% - 18px, 1180px);
+        padding-top: 9px;
+      }
+
+      .stop {
+        grid-template-columns: 1fr;
+      }
+
+      .time {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+        padding: 12px 14px;
+      }
+
+      .map-panel {
+        grid-template-rows: 160px 1fr;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="photos.css">
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <nav class="top-nav" aria-label="Navigation principale" style="flex-wrap:wrap;gap:8px"><a class="home-link" href="index.html">Accueil</a>
+<a class="home-link" href="beauval-grands-animaux.html" aria-current="page">Beauval</a>
+<a class="home-link" href="puy-du-fou-1-jour.html">Puy du Fou</a>
+<a class="home-link" href="saint-nazaire.html">Saint-Nazaire</a>
+<a class="home-link" href="dinan.html">Dinan</a>
+<a class="home-link" href="mont-saint-michel.html">Mont-Saint-Michel</a></nav>
+
+      <section class="intro" aria-labelledby="page-title">
+        <div>
+          <p class="kicker">ZooParc de Beauval</p>
+          <h1 id="page-title">Grands animaux en 1 jour</h1>
+          <p>Un parcours compact pour commencer des l'ouverture, limiter les allers-retours et garder l'energie pour les zones les plus impressionnantes : elephants, girafes, rhinoceros, hippopotames, grands felins, gorilles et pandas.</p>
+        </div>
+        <div class="hero-stats" aria-label="Resume de la journee">
+          <div class="stat"><strong>9 h</strong><span>depart ideal</span></div>
+          <div class="stat"><strong>7 h</strong><span>visite active</span></div>
+          <div class="stat"><strong>10</strong><span>etapes utiles</span></div>
+        </div>
+      </section>
+
+      <section class="map-panel" aria-label="Apercu du parcours">
+        <div class="photo" role="img" aria-label="Elephants du ZooParc de Beauval"></div>
+        <div class="route-mini">
+          <h2>Logique du trajet</h2>
+          <div class="route-line"><span class="dot"></span><span>Entrer tot par le sud et viser d'abord les zones animales les plus calmes.</span></div>
+          <div class="route-line"><span class="dot"></span><span>Regrouper savane, plaine asiatique et elephants avant la grande pause.</span></div>
+          <div class="route-line"><span class="dot"></span><span>Finir par les felins, les gorilles, puis les pandas si le rythme le permet.</span></div>
+          <a class="page-link" href="puy-du-fou-1-jour.html">Voir la page Puy du Fou</a>
+        </div>
+      </section>
+    </header>
+<figure class="trip-photo"><img src="images/beauval.jpg" alt="Éléphants dans leur espace au ZooParc de Beauval" width="1600" height="900" decoding="async"><figcaption>Éléphants dans leur espace au ZooParc de Beauval · <a href="https://www.zoobeauval.com/">ZooParc de Beauval</a></figcaption></figure>
+
+    <section class="controls" aria-label="Reglages de parcours">
+      <div class="pace" aria-label="Choisir un rythme">
+        <button class="active" type="button" data-pace="normal">Rythme normal</button>
+        <button type="button" data-pace="family">Avec enfants</button>
+        <button type="button" data-pace="fast">Version rapide</button>
+      </div>
+      <div class="progress" aria-live="polite">
+        <strong id="progressText">0 / 10 etapes faites</strong>
+        <span id="paceText">Prevoir environ 7 h sur place, pauses incluses.</span>
+      </div>
+    </section>
+
+    <main>
+      <section class="timeline" id="timeline" aria-label="Itineraire conseille">
+        <article class="stop" data-normal="20" data-family="30" data-fast="15">
+          <div class="time">09:00<span>Entree Sud</span></div>
+          <div class="stop-body">
+            <div class="stop-head">
+              <h2>Arriver a l'ouverture et filer vers les zones prioritaires</h2>
+              <label class="check" aria-label="Marquer cette etape comme faite"><input type="checkbox"></label>
+            </div>
+            <p>Prenez le plan papier ou ouvrez le plan officiel, puis avancez sans vous attarder sur les petites zones proches de l'entree.</p>
+            <div class="tag-row"><span class="tag">orientation</span><span class="tag">anti-foule</span></div>
+          </div>
+        </article>
+
+        <article class="stop" data-normal="35" data-family="45" data-fast="25">
+          <div class="time">09:20<span>Savane Africaine</span></div>
+          <div class="stop-body">
+            <div class="stop-head">
+              <h2>Girafes, zebres et grands herbivores de la savane</h2>
+              <label class="check" aria-label="Marquer cette etape comme faite"><input type="checkbox"></label>
+            </div>
+            <p>Commencez par les grands animaux visibles en espaces ouverts. C'est souvent plus agreable tot, avant les gros flux de visiteurs.</p>
+            <div class="tag-row"><span class="tag">girafes</span><span class="tag">grands herbivores</span></div>
+          </div>
+        </article>
+
+        <article class="stop" data-normal="35" data-family="45" data-fast="25">
+          <div class="time">10:00<span>Plaine Asiatique</span></div>
+          <div class="stop-body">
+            <div class="stop-head">
+              <h2>Rhinoceros et animaux massifs d'Asie</h2>
+              <label class="check" aria-label="Marquer cette etape comme faite"><input type="checkbox"></label>
+            </div>
+            <p>Gardez cette zone dans le bloc du matin : elle colle bien avec la savane et evite de traverser le parc plus tard.</p>
+            <div class="tag-row"><span class="tag">rhinoceros</span><span class="tag">plaine asiatique</span></div>
+          </div>
+        </article>
+
+        <article class="stop" data-normal="45" data-family="55" data-fast="30">
+          <div class="time">10:45<span>Plaine des Elephants</span></div>
+          <div class="stop-body">
+            <div class="stop-head">
+              <h2>Elephants d'Afrique</h2>
+              <label class="check" aria-label="Marquer cette etape comme faite"><input type="checkbox"></label>
+            </div>
+            <p>C'est une etape a ne pas presser. Restez assez longtemps pour observer les deplacements, les interactions et les points d'eau.</p>
+            <div class="tag-row"><span class="tag">priorite 1</span><span class="tag">grand espace</span></div>
+          </div>
+        </article>
+
+        <article class="stop" data-normal="35" data-family="45" data-fast="25">
+          <div class="time">11:40<span>Pause courte</span></div>
+          <div class="stop-body">
+            <div class="stop-head">
+              <h2>Boire, toilettes, ajuster avec les horaires du jour</h2>
+              <label class="check" aria-label="Marquer cette etape comme faite"><input type="checkbox"></label>
+            </div>
+            <p>Verifiez les animations du jour. Si une animation elephants, hippopotames ou pandas tombe bien, decalez le parcours de 15 a 20 minutes.</p>
+            <div class="tag-row"><span class="tag">souplesse</span><span class="tag">pause</span></div>
+          </div>
+        </article>
+
+        <article class="stop" data-normal="45" data-family="55" data-fast="30">
+          <div class="time">12:15<span>Hippopotames</span></div>
+          <div class="stop-body">
+            <div class="stop-head">
+              <h2>Reserve des Hippopotames</h2>
+              <label class="check" aria-label="Marquer cette etape comme faite"><input type="checkbox"></label>
+            </div>
+            <p>Observez-les depuis les differents points de vue. C'est une bonne etape avant le repas, car elle se suffit a elle-meme meme sans animation.</p>
+            <div class="tag-row"><span class="tag">hippopotames</span><span class="tag">point fort</span></div>
+          </div>
+        </article>
+
+        <article class="stop" data-normal="55" data-family="70" data-fast="40">
+          <div class="time">13:00<span>Repas</span></div>
+          <div class="stop-body">
+            <div class="stop-head">
+              <h2>Dejeuner simple, proche de la suite du trajet</h2>
+              <label class="check" aria-label="Marquer cette etape comme faite"><input type="checkbox"></label>
+            </div>
+            <p>Evitez de revenir vers l'entree uniquement pour manger. Beauval indique plusieurs points de restauration ouverts selon la saison.</p>
+            <div class="tag-row"><span class="tag">repos</span><span class="tag">gain de temps</span></div>
+          </div>
+        </article>
+
+        <article class="stop" data-normal="45" data-family="55" data-fast="30">
+          <div class="time">14:05<span>Terre des Lions</span></div>
+          <div class="stop-body">
+            <div class="stop-head">
+              <h2>Lions, puis grands felins proches si l'energie suit</h2>
+              <label class="check" aria-label="Marquer cette etape comme faite"><input type="checkbox"></label>
+            </div>
+            <p>Priorisez la Terre des Lions. Ajoutez le Bois des Fauves seulement si vous voulez completer avec jaguars, hyenes ou pantheres.</p>
+            <div class="tag-row"><span class="tag">lions</span><span class="tag">felins</span></div>
+          </div>
+        </article>
+
+        <article class="stop" data-normal="45" data-family="55" data-fast="30">
+          <div class="time">15:05<span>Grands singes</span></div>
+          <div class="stop-body">
+            <div class="stop-head">
+              <h2>Serre des Gorilles et grands primates</h2>
+              <label class="check" aria-label="Marquer cette etape comme faite"><input type="checkbox"></label>
+            </div>
+            <p>Gardez ce bloc en milieu d'apres-midi : il offre une respiration plus abritee et reste dans le theme des animaux imposants.</p>
+            <div class="tag-row"><span class="tag">gorilles</span><span class="tag">primates</span></div>
+          </div>
+        </article>
+
+        <article class="stop" data-normal="50" data-family="60" data-fast="35">
+          <div class="time">16:05<span>Pandas ou ours</span></div>
+          <div class="stop-body">
+            <div class="stop-head">
+              <h2>Hauteurs de Chine, puis option ours bruns</h2>
+              <label class="check" aria-label="Marquer cette etape comme faite"><input type="checkbox"></label>
+            </div>
+            <p>Terminez par les pandas geants. S'il reste du temps et que vos jambes suivent, ajoutez le Territoire Nord-Americain pour les ours bruns.</p>
+            <div class="tag-row"><span class="tag">pandas geants</span><span class="tag">option ours</span></div>
+          </div>
+        </article>
+      </section>
+
+      <aside>
+        <section class="weather" aria-label="Meteo du roadtrip">
+          <h2>Meteo du roadtrip</h2>
+          <div class="weather-list">
+            <div class="weather-day today">
+              <strong>09/09</strong>
+              <span>Beauval : couvert mais sec, 9-22°C. Bonne journee pour marcher et observer les grands animaux.</span>
+            </div>
+            <div class="weather-day">
+              <strong>10/09</strong>
+              <span>Puy du Fou : frais et couvert, 12-17°C. Prevoir veste legere pour les attentes en exterieur.</span>
+            </div>
+            <div class="weather-day">
+              <strong>11/09</strong>
+              <span>Saint-Nazaire : variable, 17-21°C. Petite averse possible, bon plan pour Escal'Atlantic.</span>
+            </div>
+            <div class="weather-day">
+              <strong>12/09</strong>
+              <span>Mont-Saint-Michel : frais, bruine possible, 12-18°C. Coupe-vent utile sur la baie.</span>
+            </div>
+            <div class="weather-day">
+              <strong>13/09</strong>
+              <span>Paris : plutot lumineux, 13-23°C. Journee favorable pour balade urbaine.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="tips">
+          <h2>Regles de decision</h2>
+          <ul>
+            <li>Si vous arrivez apres 10 h, supprimez les options et gardez elephants, hippopotames, lions, gorilles, pandas.</li>
+            <li>Si une zone est tres dense, ne forcez pas : avancez et revenez seulement si elle est sur le trajet retour.</li>
+            <li>Gardez les spectacles pour une autre visite, sauf si votre groupe y tient vraiment.</li>
+            <li>Consultez les horaires du jour le matin meme : ils changent selon la date, la meteo et l'organisation du parc.</li>
+          </ul>
+          <div class="priority" aria-label="Priorites en cas de retard">
+            <div><span class="rank">1</span><span>Elephants et hippopotames</span></div>
+            <div><span class="rank">2</span><span>Lions, gorilles, pandas</span></div>
+            <div><span class="rank">3</span><span>Rhinoceros, girafes, ours</span></div>
+          </div>
+        </section>
+
+        <section class="sources">
+          <h2>Avant de partir</h2>
+          <ul>
+            <li><a href="https://www.zoobeauval.com/horaires-du-jour" target="_blank" rel="noreferrer">Horaires du jour</a></li>
+            <li><a href="https://www.zoobeauval.com/preparez-votre-visite/plan-du-zooparc" target="_blank" rel="noreferrer">Plan officiel du parc</a></li>
+            <li><a href="https://www.zoobeauval.com/preparez-votre-visite/application-mobile" target="_blank" rel="noreferrer">Application mobile Beauval</a></li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <script>
+    const stops = Array.from(document.querySelectorAll(".stop"));
+    const checks = Array.from(document.querySelectorAll(".check input"));
+    const progressText = document.querySelector("#progressText");
+    const paceText = document.querySelector("#paceText");
+    const paceButtons = Array.from(document.querySelectorAll("[data-pace]"));
+    const paceLabels = {
+      normal: "Prevoir environ 7 h sur place, pauses incluses.",
+      family: "Prevoir environ 8 h avec pauses plus longues et marche plus lente.",
+      fast: "Prevoir environ 5 h 30 en allant droit aux priorites."
+    };
+
+    let currentPace = "normal";
+
+    function minutesToText(minutes) {
+      const hours = Math.floor(minutes / 60);
+      const rest = minutes % 60;
+      if (!hours) return `${rest} min`;
+      if (!rest) return `${hours} h`;
+      return `${hours} h ${String(rest).padStart(2, "0")}`;
+    }
+
+    function update() {
+      const done = checks.filter((check) => check.checked).length;
+      const remainingMinutes = stops.reduce((total, stop) => {
+        const check = stop.querySelector("input");
+        return check.checked ? total : total + Number(stop.dataset[currentPace]);
+      }, 0);
+
+      stops.forEach((stop) => {
+        const check = stop.querySelector("input");
+        stop.classList.toggle("done", check.checked);
+      });
+
+      progressText.textContent = `${done} / ${stops.length} etapes faites`;
+      paceText.textContent = done === stops.length
+        ? "Parcours termine. Il reste du temps pour revenir sur votre zone preferee."
+        : `${paceLabels[currentPace]} Reste estime : ${minutesToText(remainingMinutes)}.`;
+    }
+
+    checks.forEach((check) => check.addEventListener("change", update));
+
+    paceButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        currentPace = button.dataset.pace;
+        paceButtons.forEach((item) => item.classList.toggle("active", item === button));
+        update();
+      });
+    });
+
+    update();
+  </script>
+</body>
+</html>
+
+
+
+
+
+

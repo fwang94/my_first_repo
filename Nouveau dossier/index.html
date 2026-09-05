@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Les Zhu au Zoo - Road trip 4 jours</title>
+  <meta name="description" content="Page d'accueil du road trip Les Zhu au Zoo : Beauval, Puy du Fou, Saint-Nazaire, Mont-Saint-Michel et Paris.">
+  <style>
+    :root {
+      --ink: #1d211b;
+      --muted: #60685d;
+      --paper: #f6f2e8;
+      --white: #fffaf1;
+      --green: #315f3e;
+      --green-dark: #1f3f2d;
+      --red: #9c2725;
+      --gold: #cf9632;
+      --blue: #cfe0e6;
+      --line: rgba(29, 33, 27, .16);
+      --shadow: 0 18px 42px rgba(35, 42, 31, .16);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(207, 150, 50, .25), transparent 360px),
+        linear-gradient(135deg, #eef4ec 0%, var(--paper) 48%, #edf5f7 100%);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .shell {
+      width: min(1160px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 22px 0 44px;
+    }
+
+    .hero {
+      min-height: 440px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(290px, .95fr);
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .top-nav { flex-wrap: wrap; gap: 8px;
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      gap: 8px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .home-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 14px;
+      border-radius: 8px;
+      background: var(--green-dark);
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 850;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-main,
+    .hero-map,
+    .day,
+    .quick-links,
+    .weather {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 250, 241, .9);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-main {
+      padding: clamp(22px, 5vw, 40px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-main::after {
+      content: "";
+      position: absolute;
+      right: -70px;
+      bottom: -90px;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: conic-gradient(from 130deg, rgba(49, 95, 62, .30), rgba(207, 150, 50, .32), rgba(156, 39, 37, .25), rgba(49, 95, 62, .30));
+      opacity: .85;
+    }
+
+    .kicker {
+      margin: 0 0 12px;
+      color: var(--green-dark);
+      font-size: .84rem;
+      font-weight: 850;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 11ch;
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(3rem, 9vw, 7rem);
+      line-height: .88;
+      letter-spacing: 0;
+    }
+
+    .hero-main p {
+      max-width: 65ch;
+      margin: 22px 0 0;
+      color: var(--muted);
+      font-size: 1.08rem;
+    }
+
+    .stats {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    .stat {
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(49, 95, 62, .16);
+      background: rgba(238, 244, 236, .84);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.45rem;
+      line-height: 1;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .hero-map {
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: 230px 1fr;
+    }
+
+    .photo {
+      min-height: 230px;
+      background:
+        linear-gradient(180deg, rgba(29, 33, 27, .08), rgba(29, 33, 27, .50)),
+        url("images/beauval.jpg");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .map-copy {
+      padding: 18px;
+      background: var(--green-dark);
+      color: var(--white);
+    }
+
+    .map-copy h2 {
+      margin: 0 0 12px;
+      font-size: 1.1rem;
+    }
+
+    .map-copy p {
+      margin: 0;
+      color: rgba(255, 250, 241, .86);
+    }
+
+    .quick-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px;
+      margin-bottom: 18px;
+    }
+
+    .quick-links strong {
+      font-size: 1rem;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 14px;
+      border-radius: 8px;
+      color: var(--white);
+      background: var(--green);
+      text-decoration: none;
+      font-weight: 850;
+    }
+
+    .button.red {
+      background: var(--red);
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .days {
+      display: grid;
+      gap: 12px;
+    }
+
+    .day {
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 124px 1fr;
+    }
+
+    .date {
+      padding: 18px 14px;
+      background: #e6d5b2;
+      border-right: 1px solid var(--line);
+      font-weight: 850;
+    }
+
+    .date span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: .84rem;
+      font-weight: 700;
+    }
+
+    .day-body {
+      padding: 16px;
+    }
+
+    .day h2 {
+      margin: 0 0 8px;
+      font-size: 1.18rem;
+    }
+
+    .day p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 12px;
+    }
+
+    .tag {
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: #eef4ec;
+      color: var(--green-dark);
+      font-size: .82rem;
+      font-weight: 800;
+    }
+
+    aside {
+      position: sticky;
+      top: 16px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .weather {
+      padding: 16px;
+    }
+
+    .weather h2 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+    }
+
+    .weather-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .weather-day {
+      display: grid;
+      grid-template-columns: 58px 1fr;
+      gap: 10px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(238, 244, 236, .72);
+    }
+
+    .weather-day strong,
+    .weather-day span {
+      display: block;
+    }
+
+    .weather-day strong {
+      color: var(--green-dark);
+      font-size: .9rem;
+    }
+
+    .weather-day span {
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    @media (max-width: 860px) {
+      .hero,
+      main {
+        grid-template-columns: 1fr;
+      }
+
+      aside {
+        position: static;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .shell {
+        width: min(100% - 18px, 1160px);
+        padding-top: 9px;
+      }
+
+      .day {
+        grid-template-columns: 1fr;
+      }
+
+      .date {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+        padding: 12px 14px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="photos.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="hero">
+      <nav class="top-nav" aria-label="Navigation principale" style="flex-wrap:wrap;gap:8px"><a class="home-link" href="index.html" aria-current="page">Accueil</a>
+<a class="home-link" href="beauval-grands-animaux.html">Beauval</a>
+<a class="home-link" href="puy-du-fou-1-jour.html">Puy du Fou</a>
+<a class="home-link" href="saint-nazaire.html">Saint-Nazaire</a>
+<a class="home-link" href="dinan.html">Dinan</a>
+<a class="home-link" href="mont-saint-michel.html">Mont-Saint-Michel</a></nav>
+
+      <section class="hero-main" aria-labelledby="page-title">
+        <div>
+          <p class="kicker">Road trip familial</p>
+          <h1 id="page-title">Les Zhu au Zoo</h1>
+          <p>Quatre jours pour enchaîner les grands animaux, les spectacles, l'océan, les pierres médiévales et le retour par Paris. Une page d'accueil pour garder le fil sans ouvrir dix onglets.</p>
+        </div>
+        <div class="stats" aria-label="Resume du voyage">
+          <div class="stat"><strong>4 jours</strong><span>de visite active</span></div>
+          <div class="stat"><strong>5 lieux</strong><span>avec Paris au retour</span></div>
+          <div class="stat"><strong>5 pages</strong><span>détaillées déjà prêtes</span></div>
+        </div>
+      </section>
+
+      <section class="hero-map" aria-label="Apercu du voyage">
+        <div class="photo" role="img" aria-label="Elephants du ZooParc de Beauval"></div>
+        <div class="map-copy">
+          <h2>Fil conducteur</h2>
+          <p>Beauval lance le voyage avec les animaux, le Puy du Fou prend le relais avec les grands spectacles, puis la route file vers Saint-Nazaire, Dinan, le Mont-Saint-Michel et Paris.</p>
+        </div>
+      </section>
+    </header>
+<section class="trip-photos" aria-labelledby="photos-title"><h2 id="photos-title">Le voyage en images</h2><div class="trip-gallery"><figure class="trip-photo"><a href="beauval-grands-animaux.html"><img src="images/beauval.jpg" alt="Éléphants dans leur espace au ZooParc de Beauval" width="1600" height="900" loading="lazy" decoding="async"></a><figcaption><strong><a href="beauval-grands-animaux.html">Beauval</a></strong><a href="https://www.zoobeauval.com/">ZooParc de Beauval</a></figcaption></figure><figure class="trip-photo"><a href="puy-du-fou-1-jour.html"><img src="images/puy-du-fou.jpg" alt="Scène du spectacle Les Vikings au Puy du Fou" width="1600" height="900" loading="lazy" decoding="async"></a><figcaption><strong><a href="puy-du-fou-1-jour.html">Puy du Fou</a></strong><a href="https://www.destination-vendeegrandlittoral.com/">Destination Vendée Grand Littoral</a></figcaption></figure><figure class="trip-photo"><a href="saint-nazaire.html"><img src="images/saint-nazaire.jpg" alt="Promenade arborée le long de la plage de Saint-Nazaire" width="1600" height="900" loading="lazy" decoding="async"></a><figcaption><strong><a href="saint-nazaire.html">Saint-Nazaire</a></strong><a href="https://www.saint-nazaire-tourisme.com/decouvrir/decouvrir-la-mer/front-de-mer-de-saint-nazaire/">© Alexandre Lamoureux / Saint-Nazaire Renversante</a></figcaption></figure><figure class="trip-photo"><a href="dinan.html"><img src="images/dinan.webp" alt="Pont de pierre et maisons du port de Dinan au bord de la Rance" width="1600" height="900" loading="lazy" decoding="async"></a><figcaption><strong><a href="dinan.html">Dinan</a></strong><a href="https://www.tourismebretagne.com/destinations/les-10-destinations/cap-frehel-saint-malo-baie-du-mont-saint-michel/dinan/">Source : Tourisme Bretagne</a></figcaption></figure><figure class="trip-photo"><a href="mont-saint-michel.html"><img src="images/mont-saint-michel.jpg" alt="Une visiteuse face au Mont-Saint-Michel au coucher du soleil" width="1600" height="900" loading="lazy" decoding="async"></a><figcaption><strong><a href="mont-saint-michel.html">Mont-Saint-Michel</a></strong><a href="https://www.ot-montsaintmichel.com/">Source : Office de tourisme Mont Saint-Michel – Normandie</a></figcaption></figure></div></section>
+
+    <section class="quick-links" aria-label="Pages detaillees">
+      <strong>Pages detaillees</strong>
+      <div class="buttons">
+        <a class="button" href="beauval-grands-animaux.html">Itineraire Beauval</a>
+        <a class="button red" href="puy-du-fou-1-jour.html">Itineraire Puy du Fou</a>
+        <a class="button" href="saint-nazaire.html">Découvrir Saint-Nazaire</a>
+        <a class="button" href="mont-saint-michel.html">Visiter le Mont-Saint-Michel</a>
+        <a class="button" href="dinan.html">Découvrir Dinan</a>
+      </div>
+    </section>
+
+    <main>
+      <section class="days" aria-label="Programme du road trip">
+        <article class="day">
+          <div class="date">Jour 1<span>09/09</span></div>
+          <div class="day-body">
+            <h2>ZooParc de Beauval</h2>
+            <p>Journee centree sur les grands animaux : elephants, girafes, rhinoceros, hippopotames, lions, gorilles et pandas.</p>
+            <div class="tags"><span class="tag">animaux</span><span class="tag">marche</span><span class="tag">depart tot</span></div>
+          </div>
+        </article>
+
+        <article class="day">
+          <div class="date">Jour 2<span>10/09</span></div>
+          <div class="day-body">
+            <h2>Puy du Fou</h2>
+            <p>Journee organisee autour des horaires de spectacles : Signe du Triomphe, Vikings, oiseaux, chevalerie et option nocturne selon billet.</p>
+            <div class="tags"><span class="tag">spectacles</span><span class="tag">horaires</span><span class="tag">attente</span></div>
+          </div>
+        </article>
+
+        <article class="day">
+          <div class="date">Jour 3<span>11/09</span></div>
+          <div class="day-body">
+            <h2><a href="saint-nazaire.html">Saint-Nazaire</a></h2>
+            <p>Pause maritime avec Escal'Atlantic, le sous-marin Espadon et le front de mer si la météo laisse une fenêtre.</p>
+            <div class="tags"><span class="tag">ocean</span><span class="tag">interieur</span><span class="tag">paquebots</span></div>
+          </div>
+        </article>
+
+        <article class="day">
+          <div class="date">Jour 4<span>12/09</span></div>
+          <div class="day-body">
+            <h2><a href="dinan.html">Dinan</a> et Mont-Saint-Michel</h2>
+            <p>Matin ou pause a Dinan pour les remparts et le port, puis Mont-Saint-Michel avec le village, les remparts et l'abbaye si le timing est bon.</p>
+            <div class="tags"><span class="tag">patrimoine</span><span class="tag">escaliers</span><span class="tag">coupe-vent</span></div>
+          </div>
+        </article>
+
+        <article class="day">
+          <div class="date">Retour<span>13/09</span></div>
+          <div class="day-body">
+            <h2>Paris</h2>
+            <p>Retour plus calme : garder une balade simple ou un repas sympa, sans charger la journée après les grandes étapes.</p>
+            <div class="tags"><span class="tag">retour</span><span class="tag">balade</span><span class="tag">souple</span></div>
+          </div>
+        </article>
+      </section>
+
+      <aside>
+        <section class="weather" aria-label="Meteo du road trip">
+          <h2>Meteo du roadtrip</h2>
+          <div class="weather-list">
+            <div class="weather-day"><strong>09/09</strong><span>Beauval : couvert mais sec, 9-22°C.</span></div>
+            <div class="weather-day"><strong>10/09</strong><span>Puy du Fou : frais et couvert, 12-17°C.</span></div>
+            <div class="weather-day"><strong>11/09</strong><span>Saint-Nazaire : variable, 17-21°C.</span></div>
+            <div class="weather-day"><strong>12/09</strong><span>Mont-Saint-Michel : bruine possible, 12-18°C.</span></div>
+            <div class="weather-day"><strong>13/09</strong><span>Paris : plutot lumineux, 13-23°C.</span></div>
+          </div>
+        </section>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>
+
+
+
+
+
+
